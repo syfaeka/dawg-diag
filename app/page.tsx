@@ -9,42 +9,42 @@ const RULES_DATA = [
   {
     id: 1,
     nama_rule: "Komputer tidak menyala",
-    gejala: ["power mati", "kipas diam", "led mati"],
-    solusi: "Periksa PSU dan kabel power. Cek koneksi power button ke motherboard.",
+    gejala: ["Indikator Power mati", "Kipas diam", "LED pada motherboard mati"],
+    solusi: "Periksa PSU dan kabel power. Cek koneksi tombol power ke motherboard.",
     cf_rule: 0.8
   },
   {
     id: 2,
     nama_rule: "RAM rusak",
-    gejala: ["bunyi beep 3 kali", "layar blank", "komputer restart sendiri"],
+    gejala: ["Bunyi beep 3 kali", "Layar black screen/blank", "Komputer restart sendiri"],
     solusi: "Lepas dan bersihkan RAM, lalu pasang kembali. Coba slot RAM berbeda.",
     cf_rule: 0.9
   },
   {
     id: 3,
     nama_rule: "Hard disk bermasalah",
-    gejala: ["bunyi klik", "boot lambat", "blue screen"],
+    gejala: ["Bunyi klik", "Booting lambat", "Blue screen"],
     solusi: "Backup data segera. Periksa kabel SATA dan ganti hard disk jika perlu.",
     cf_rule: 0.85
   },
   {
     id: 4,
     nama_rule: "Overheat processor",
-    gejala: ["komputer restart sendiri", "kipas bising", "performa lambat"],
+    gejala: ["Komputer restart sendiri", "Kipas bising", "Performa lambat"],
     solusi: "Bersihkan heatsink dan ganti thermal paste. Periksa sistem pendingin.",
     cf_rule: 0.75
   },
   {
     id: 5,
-    nama_rule: "VGA card rusak",
-    gejala: ["layar blank", "artefak gambar", "blue screen"],
+    nama_rule: "VGA Card rusak",
+    gejala: ["Layar black screen/blank", "Muncul artefak pada layar", "Blue screen"],
     solusi: "Bersihkan slot VGA. Coba VGA di komputer lain atau ganti VGA.",
     cf_rule: 0.82
   },
   {
     id: 6,
     nama_rule: "Motherboard bermasalah",
-    gejala: ["bunyi beep 3 kali", "led mati", "komputer restart sendiri"],
+    gejala: ["Bunyi beep 3 kali", "Slot RAM tidak berfungsi", "Komputer restart sendiri"],
     solusi: "Periksa kapasitor yang menggembung. Mungkin perlu ganti motherboard.",
     cf_rule: 0.7
   }
@@ -157,10 +157,10 @@ function App() {
   };
 
   const renderHome = () => (
-    <div className="space-y-6">
+    <div className="space-y-6 text-gray-900">
       <div className="bg-linear-to-r from-blue-600 to-purple-600 rounded-lg p-6 text-white">
         <h1 className="text-3xl font-bold mb-2">Sistem Pakar Diagnosa Komputer</h1>
-        <p className="text-blue-100">Pilih gejala yang dialami komputer Anda untuk mendapatkan diagnosa</p>
+        <p className="text-blue-100">Pilih gejala yang dialami komputer Anda untuk mendapatkan solusi</p>
       </div>
 
       <div className="bg-white rounded-lg shadow-lg p-6">
@@ -224,7 +224,7 @@ function App() {
                     <YAxis label={{ value: 'Persentase (%)', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey="cf_percentage" fill="#3b82f6" name="Tingkat Kepastian (%)" />
+                    <Bar dataKey="cf_percentage" fill="#3b82f6" name="Certainty Factor (%)" />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
@@ -264,7 +264,7 @@ function App() {
   );
 
   const renderHistory = () => (
-    <div className="space-y-6">
+    <div className="space-y-6 text-gray-900">
       <div className="bg-linear-to-r from-purple-600 to-pink-600 rounded-lg p-6 text-white">
         <h1 className="text-3xl font-bold mb-2">Riwayat Diagnosa</h1>
         <p className="text-purple-100">Lihat kembali hasil diagnosa sebelumnya</p>
