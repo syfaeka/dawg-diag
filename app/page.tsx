@@ -40,42 +40,42 @@ const RULES_DATA = [
   {
     id: 1,
     nama_rule: "Komputer tidak menyala",
-    gejala: ["power mati", "kipas diam", "led mati"],
-    solusi: "Periksa PSU dan kabel power. Cek koneksi power button ke motherboard.",
+    gejala: ["Indikator Power mati", "Kipas diam", "LED pada motherboard mati"],
+    solusi: "Periksa PSU dan kabel power. Cek koneksi tombol power ke motherboard.",
     cf_rule: 0.8
   },
   {
     id: 2,
     nama_rule: "RAM rusak",
-    gejala: ["bunyi beep 3 kali", "layar blank", "komputer restart sendiri"],
+    gejala: ["Bunyi beep 3 kali", "Layar black screen/blank", "Komputer restart sendiri"],
     solusi: "Lepas dan bersihkan RAM, lalu pasang kembali. Coba slot RAM berbeda.",
     cf_rule: 0.9
   },
   {
     id: 3,
     nama_rule: "Hard disk bermasalah",
-    gejala: ["bunyi klik", "boot lambat", "blue screen"],
+    gejala: ["Bunyi klik", "Booting lambat", "Blue screen"],
     solusi: "Backup data segera. Periksa kabel SATA dan ganti hard disk jika perlu.",
     cf_rule: 0.85
   },
   {
     id: 4,
     nama_rule: "Overheat processor",
-    gejala: ["komputer restart sendiri", "kipas bising", "performa lambat"],
+    gejala: ["Komputer restart sendiri", "Kipas bising", "Performa lambat"],
     solusi: "Bersihkan heatsink dan ganti thermal paste. Periksa sistem pendingin.",
     cf_rule: 0.75
   },
   {
     id: 5,
-    nama_rule: "VGA card rusak",
-    gejala: ["layar blank", "artefak gambar", "blue screen"],
+    nama_rule: "VGA Card rusak",
+    gejala: ["Layar black screen/blank", "Muncul artefak pada layar", "Blue screen"],
     solusi: "Bersihkan slot VGA. Coba VGA di komputer lain atau ganti VGA.",
     cf_rule: 0.82
   },
   {
     id: 6,
     nama_rule: "Motherboard bermasalah",
-    gejala: ["bunyi beep 3 kali", "led mati", "komputer restart sendiri"],
+    gejala: ["Bunyi beep 3 kali", "Slot RAM tidak berfungsi", "Komputer restart sendiri"],
     solusi: "Periksa kapasitor yang menggembung. Mungkin perlu ganti motherboard.",
     cf_rule: 0.7
   }
@@ -188,6 +188,8 @@ export default function App() {
         ? prev.filter(s => s !== symptom)
         : [...prev, symptom]
     );
+    setSelectedSymtoms(symptom)
+    setDetails(true)
   };
 
 
@@ -195,7 +197,7 @@ export default function App() {
      HANDLE DIAGNOSIS
      ======================================================= */
   const handleDiagnose = () => {
-    if (selectedSymptoms.length === 0) {
+    if (symptoms.length === 0) {
       alert('Pilih minimal 1 gejala untuk diagnosa');
       return;
     }
@@ -205,7 +207,7 @@ export default function App() {
     const diagnosis: Diagnosis = {
       id: Date.now(),
       timestamp: new Date().toISOString(),
-      symptoms: [...selectedSymptoms],
+      symptoms: [...symptoms],
       results
     };
 
@@ -222,8 +224,11 @@ export default function App() {
      RESET FORM
      ======================================================= */
   const handleReset = () => {
-    setSelectedSymptoms([]);
+    setSymptoms([]);
     setDiagnosisResult(null);
+    if (details == true) {
+      setDetails(false)
+    }
   };
 
 
@@ -282,6 +287,28 @@ export default function App() {
             </label>
           ))}
         </div>
+        {/* checkboxes */}
+        <div className="bg-white rounded-lg shadow-lg p-6">
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
+            <Stethoscope className="w-6 h-6" />
+            Pilih Gejala
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {allSymptoms.map(symptom => (
+              <label
+                key={symptom}
+                className="flex items-center gap-3 p-3 border rounded-lg hover:bg-blue-50 cursor-pointer transition"
+              >
+                <input
+                  type="checkbox"
+                  checked={symptoms.includes(symptom)}
+                  onChange={() => handleSymptomToggle(symptom)}
+                  className="w-5 h-5 text-blue-600"
+                />
+                <span className="text-gray-700">{symptom}</span>
+              </label>
+            ))}
+          </div>
 
         {/* BUTTONS */}
         <div className="flex flex-col md:flex-row gap-4 mt-6">
@@ -310,7 +337,6 @@ export default function App() {
             Reset
           </button>
         </div>
-      </div>
 
       {/* HASIL DIAGNOSA */}
       {diagnosisResult && (
