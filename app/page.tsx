@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { Trash2, RotateCcw, Stethoscope, History, Home, Moon, Sun } from 'lucide-react';
+import Link from 'next/link';
+import Image from 'next/image';
+import LogoScroll from './components/LogoScroll';
 
 // interface / tyoe
 type Symptom = string;
@@ -197,6 +200,7 @@ function App() {
   const [selectedSymptoms, setSelectedSymtoms] = useState();
 
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isLandingPage, setLandingPage] = useState(true);
 
   // Load history dari localStorage
   useEffect(() => {
@@ -492,75 +496,152 @@ function App() {
   );
 
   return (
-    <div className={isDarkMode ? 'dark' : ''}>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 font-sans">
-        
-        {/* NAV */}
-        <nav className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 transition-colors duration-300 border-b dark:border-gray-700">
-          <div className="max-w-5xl mx-auto px-4 py-4">
-            <div className="flex justify-between items-center">
-              
-              {/* Menu Kiri */}
-              <div className="flex gap-2 sm:gap-4">
+    <div className={`${isDarkMode ? 'dark' : ''} overflow-x-hidden overflow-y-hidden`}>
+      {isLandingPage == true && (
+        <div className="relative min-h-screen bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 text-sm">
+          <header className="h-20 w-dvw px-6 sm:px-96 py-6">
+            <nav className="flex justify-between items-center">
+              <Link href="/" className="flex justify-center items-center gap-4 sm:gap-8">
+                <Image src="/logo.png" alt="logo" width={200} height={100} className="invert-0 dark:invert w-12 h-auto" />
+                <h1>Dawg Diag</h1>
+              </Link>
+              <div className="flex justify-center items-center gap-4 sm:gap-8">
                 <button
-                  onClick={() => setCurrentPage('home')}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base ${
-                    currentPage === 'home'
-                      ? 'bg-indigo-600 text-white shadow-indigo-500/30 shadow-lg'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                  }`}
-                >
-                  <Home className="w-4 h-4 sm:w-5 sm:h-5" />
-                  Diagnosa
+                  onClick={toggleTheme}
+                  className="flex gap-4 items-center p-2.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  aria-label="Toggle Dark Mode"
+                  >
+                  {isDarkMode ?
+                    <>
+                      <Sun className="w-5 h-5" />
+                      <span className="hidden sm:block">
+                        Mode Terang
+                      </span>
+                    </> : 
+                    <>
+                      <Moon className="w-5 h-5" />
+                      <span className="hidden sm:block">
+                        Mode Gelap
+                      </span>
+                    </>
+                    }
                 </button>
-
-                <button
-                  onClick={() => setCurrentPage('history')}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base ${
-                    currentPage === 'history'
-                      ? 'bg-purple-600 text-white shadow-purple-500/30 shadow-lg'
-                      : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
-                  }`}
-                >
-                  <History className="w-4 h-4 sm:w-5 sm:h-5" />
-                  Riwayat
-                  {history.length > 0 && (
-                    <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full ml-1">
-                      {history.length}
-                    </span>
-                  )}
-                </button>
+                <Link href="https://github.com/rzlmiooo/dawg-diag" target='_blank'>
+                    <Image src="/github.svg" width={100} height={100} className='w-auto h-9 invert' />
+                </Link>
               </div>
-
-              {/* Menu Kanan (Toggle Dark Mode) */}
-              <button
-                onClick={toggleTheme}
-                className="p-2.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
-                aria-label="Toggle Dark Mode"
-              >
-                {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-              </button>
-
+            </nav>
+          </header>
+          <main className="w-dvw h-full flex flex-col justify-center items-center">
+            <div className='p-6 pb-18 px-6 sm:px-48 flex flex-col justify-center items-center'>
+              <h1 className="pt-6 sm:pt-18 text-center text-xl sm:text-5xl tracking-tight leading-tight">Selamat Datang di <span className="px-3 dark:bg-gray-200 bg-gray-900 dark:text-gray-900 text-gray-100 font-semibold">Dawg Diag</span>
+              </h1>
+              <h2 className="text-2xl sm:text-3xl text-center pt-2 sm:pt-6">SISTEM DETEKSI DINI KERUSAKAN PADA KOMPUTER</h2>
+              <p className="pt-12 text-center">Sistem ini merupakan sistem pakar untuk mendiagnosa kerusakan pada komputer, yang dirancang untuk membantu pengguna mengenali gejala kerusakan perangkat secara cepat, mudah, dan akurat. Dengan metode Forward Chaining dan Certainty Factor, sistem ini mampu memberikan kemungkinan penyebab kerusakan serta solusi penanganan yang tepat sebelum perangkat dibawa ke teknisi. Melalui antarmuka yang sederhana dan ramah pengguna, sistem ini dapat digunakan oleh siapa saja, termasuk pengguna yang tidak memiliki pengetahuan teknis mendalam mengenai komputer.</p>
+              <button onClick={() => setLandingPage(false)} className="mt-8 px-3 py-2 flex w-fit dark:bg-gray-200 hover:bg-gray-2000 dark:hover:bg-gray-300 bg-gray-900 dark:text-gray-900 text-gray-100 text-3xl font-semibold transition-colors duration-300">Mulai Diagnosa</button>
             </div>
-          </div>
-        </nav>
+
+            <LogoScroll />
+            
+            <div className="hidden sm:flex gap-1 w-dvw items-center justify-center bg-gray-200 p-0.5 text-gray-50">
+              <div className="text-5xl text-gray-900 pr-6">Our <br/>Team</div>
+              <ul className="bg-gray-900 px-4 py-1 text-xl">
+                <li>Mohammad Syfa EC (23051010xx)</li>
+                <li>Rizal Maulana (2305101018)</li>
+                <li>Varid Firmansyah (23051010xx)</li>
+              </ul>
+              <ul className="bg-gray-900 px-4 py-1 text-xl">
+                <li>as Frontend Developer</li>
+                <li>as Backend Developer</li>
+                <li>as UI/UX Designer</li>
+              </ul>
+            </div>
+          </main>
+          <footer className="flex justify-center w-dvw py-8 text-sm">
+            Copyright(C) 2025. Rizal, Syfa, dan Varid
+          </footer>
+        </div>
+      )}
+
+      {isLandingPage == false && (
+        <div className="min-h-screen bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 font-sans">
+          
+          {/* NAV */}
+          <nav className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50 transition-colors duration-300 border-b dark:border-gray-700">
+            <div className="max-w-5xl mx-auto px-4 py-4">
+              <div className="flex justify-between items-center">
+                
+                {/* Menu Kiri */}
+                <div className="flex gap-2 sm:gap-4">
+                  <button
+                    onClick={() => setCurrentPage('home')}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base ${
+                      currentPage === 'home'
+                        ? 'bg-indigo-600 text-white shadow-indigo-500/30 shadow-lg'
+                        : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    <Home className="w-4 h-4 sm:w-5 sm:h-5" />
+                    Diagnosa
+                  </button>
+
+                  <button
+                    onClick={() => setCurrentPage('history')}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-semibold transition-all duration-300 text-sm sm:text-base ${
+                      currentPage === 'history'
+                        ? 'bg-purple-600 text-white shadow-purple-500/30 shadow-lg'
+                        : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                    }`}
+                  >
+                    <History className="w-4 h-4 sm:w-5 sm:h-5" />
+                    Riwayat
+                    {history.length > 0 && (
+                      <span className="bg-red-500 text-white text-xs px-2 py-0.5 rounded-full ml-1">
+                        {history.length}
+                      </span>
+                    )}
+                  </button>
+                </div>
+
+                {/* Menu Kanan (Toggle Dark Mode) */}
+                <button
+                  onClick={toggleTheme}
+                  className="flex gap-4 items-center p-2.5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  aria-label="Toggle Dark Mode"
+                  >
+                  {isDarkMode ?
+                    <>
+                      <Sun className="w-5 h-5" />
+                      Mode Terang
+                    </> : 
+                    <>
+                      <Moon className="w-5 h-5" />
+                      Mode Gelap
+                    </>
+                    }
+                </button>
+
+              </div>
+            </div>
+          </nav>
 
 
-        {/* CONTENT */}
-        <main className="max-w-5xl mx-auto px-4 py-8">
-          {currentPage === 'home' ? renderHome() : renderHistory()}
-        </main>
+          {/* CONTENT */}
+          <main className="max-w-5xl mx-auto px-4 py-8">
+            {currentPage === 'home' ? renderHome() : renderHistory()}
+          </main>
 
 
-        {/* FOOTER */}
-        <footer className="bg-white dark:bg-gray-800 border-t dark:border-gray-700 mt-12 py-8 transition-colors duration-300">
-          <div className="max-w-5xl mx-auto px-4 text-center text-gray-500 dark:text-gray-400">
-            <p className="font-medium">Sistem Pakar Diagnosa Komputer</p>
-            <p className="text-sm mt-1 opacity-70">Metode Certainty Factor • © {new Date().getFullYear()}</p>
-          </div>
-        </footer>
+          {/* FOOTER */}
+          <footer className="bg-white dark:bg-gray-800 border-t dark:border-gray-700 mt-12 py-8 transition-colors duration-300">
+            <div className="max-w-5xl mx-auto px-4 text-center text-gray-500 dark:text-gray-400">
+              <p className="font-medium">Sistem Pakar Diagnosa Komputer</p>
+              <p className="text-sm mt-1 opacity-70">Metode Certainty Factor • © {new Date().getFullYear()}</p>
+            </div>
+          </footer>
 
-      </div>
+        </div>
+      )}
     </div>
   );
 }
